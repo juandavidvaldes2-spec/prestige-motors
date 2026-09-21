@@ -35,3 +35,25 @@ export const banks = [
 ];
 /* Ruta logística de una unidad */
 export const logistics = ['Pedido a fábrica','En tránsito','En aduana','En patio','En exhibición'];
+
+/* Configuración del vehículo. Precios de ejemplo. */
+export const paints = [
+  { name:'Santorini Black', hex:'#1c1e20', price:0 },
+  { name:'Fuji White', hex:'#e8e9e5', price:0 },
+  { name:'Carpathian Grey', hex:'#5c6266', price:1900 },
+  { name:'Eiger Grey', hex:'#8e9298', price:1200 },
+  { name:'Pangea Green', hex:'#5d6a57', price:1900 },
+  { name:'Firenze Red', hex:'#7d2420', price:2400 },
+  { name:'Sunset Gold', hex:'#b8912f', price:2400 }
+];
+export const trims = [
+  { name:'Ebony', hex:'#232325', desc:'Cuero perforado', price:0 },
+  { name:'Caraway', hex:'#8a6a3f', desc:'Cuero Windsor', price:2600 },
+  { name:'Light Oyster', hex:'#cfc7b8', desc:'Cuero Windsor', price:2600 },
+  { name:'Deep Garnet', hex:'#5b2229', desc:'Cuero semianilina', price:3800 }
+];
+export const wheels = [
+  { name:'20 pulgadas', desc:'Estilo 5098, acabado satinado', price:0 },
+  { name:'21 pulgadas', desc:'Estilo 7016, diamante pulido', price:1400 },
+  { name:'22 pulgadas', desc:'Estilo 9012, negro brillante', price:2400 }
+];
