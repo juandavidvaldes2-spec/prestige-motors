@@ -235,6 +235,7 @@ function saveVehicle(){
     color:g('nv-color')||'Fuji White', hex:'#8a8a85', stock:+g('nv-stock')||1, condition:'Nuevo',
     days:0, engine:g('nv-engine')||'Por definir', image:'hero', km:0, stage:+g('nv-stage')};
   vehicles.unshift(v);
+  state.newVehicles=[v,...(state.newVehicles||[])];save();
   closeModal(); render();
   toast(model+' '+version+' ya se puede cotizar');
 }
@@ -302,7 +303,7 @@ document.addEventListener('click',e=>{
  if(k==='approvals'){activeStage='Por aprobar';go('quotes')}
  if(k==='notifications')openModal(`<div class="drawer-eyebrow">CENTRO DE ATENCIÓN</div><h2 class="drawer-title">Lo que requiere tu mirada.</h2><div class="notification-list"><button data-action="approvals">${ic('shield')}<span><strong>Una propuesta por revisar</strong><small>Roberto Chen · Range Rover Autobiography</small></span>${ic('arrow')}</button><button data-action="insight-quote">${ic('spark')}<span><strong>Inventario con potencial</strong><small>Velar · 76 días · Cliente interesado</small></span>${ic('arrow')}</button><button data-client="c8">${ic('calendar')}<span><strong>Test drive de Lucía</strong><small>Hoy, 14:00 · Costa del Este</small></span>${ic('arrow')}</button></div>`);
  if(k==='reset-demo')openModal(`<div class="drawer-eyebrow">SESIÓN DE DEMOSTRACIÓN</div><h2 class="drawer-title">Volver al punto de partida.</h2><p class="settings-description">Se eliminarán las propuestas, clientes y actividades que creaste en este navegador durante la prueba. Los datos originales de ejemplo volverán a estar disponibles.</p><div class="drawer-actions">${button('Conservar mi sesión','close','secondary')}${button('Restablecer demo','confirm-reset','primary')}</div>`,'small-modal');
- if(k==='confirm-reset'){state=structuredClone(defaultState);save();closeModal();resetDraft();go('overview');toast('Datos de ejemplo restablecidos')}
+ if(k==='confirm-reset'){for(const v of (state.newVehicles||[])){const i=vehicles.findIndex(x=>x.id===v.id);if(i>-1)vehicles.splice(i,1)}state=structuredClone(defaultState);save();closeModal();resetDraft();go('overview');toast('Datos de ejemplo restablecidos')}
  if(['approvals','agenda','pipeline','insights'].includes(k)&&document.querySelector('[data-overlay]'))closeModal();
 });
 document.addEventListener('change',e=>{const el=e.target,a=el.dataset;
@@ -333,6 +334,9 @@ document.addEventListener('dragover',e=>{const col=e.target.closest('[data-stage
 document.addEventListener('dragleave',e=>{const col=e.target.closest('[data-stage-drop]');if(col&&!col.contains(e.relatedTarget))col.classList.remove('drag-over')});
 document.addEventListener('drop',e=>{const col=e.target.closest('[data-stage-drop]');if(!col)return;e.preventDefault();const c=state.clients.find(c=>c.id===e.dataTransfer.getData('text/plain'));if(c&&c.stage!==col.dataset.stageDrop){c.stage=col.dataset.stageDrop;c.last='Ahora';addNote(c.id,'Etapa actualizada',c.stage);save();render();toast(c.name+' · '+c.stage)}});
 document.addEventListener('keydown',e=>{if((e.metaKey||e.ctrlKey)&&e.key==='k'){e.preventDefault();showSearch()}if(e.key==='Escape'){closeModal();document.body.classList.remove('nav-open')}if(e.key==='Tab'&&document.querySelector('[role="dialog"]')){const elements=[...document.querySelector('[role="dialog"]').querySelectorAll('button:not(:disabled),a[href],input,select,textarea,[tabindex="0"]')].filter(el=>el.offsetParent!==null);const first=elements[0],last=elements.at(-1);if(e.shiftKey&&document.activeElement===first){e.preventDefault();last?.focus()}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first?.focus()}}});
+/* Unidades creadas por el usuario, se recuperan al volver a abrir */
+for(const v of [...(state.newVehicles||[])].reverse()) if(!vehicles.some(x=>x.id===v.id)) vehicles.unshift(v);
+
 /* Acceso con clave */
 const CLAVE='PRESTIGE2027';
 function accesoOk(){ try{ return sessionStorage.getItem('dpm-ok')==='1' }catch{ return false } }
