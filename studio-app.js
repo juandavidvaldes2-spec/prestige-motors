@@ -175,23 +175,41 @@ function logisticsTrack(v){
     <p class="track-note">${d===0?'Disponible para entrega inmediata.':'Entrega estimada en '+d+' días.'} El cliente ve esta misma fecha en su propuesta.</p></div>`;
 }
 function newVehicle(){
+  const campo=(id,label,ph,tipo='text',extra='')=>`<div class="nv-field"><label for="${id}">${label}</label><input id="${id}" type="${tipo}" placeholder="${ph}" ${extra}></div>`;
+  const select=(id,label,opts)=>`<div class="nv-field"><label for="${id}">${label}</label><select id="${id}">${opts}</select></div>`;
   openModal(`<div class="drawer-eyebrow">ALTA DE UNIDAD</div>
   <h2 class="drawer-title">Crear un vehículo</h2>
   <p class="drawer-subtitle">Se guarda y queda disponible para cotizar en el acto. Sin llamadas y sin esperar días de montaje.</p>
-  <div class="terms-grid nv-grid">
-    <label>Marca<select id="nv-brand"><option>Range Rover</option><option>Defender</option><option>Discovery</option><option>Jaguar</option></select></label>
-    <label>Modelo<input id="nv-model" placeholder="Defender 130"></label>
-    <label>Versión<input id="nv-version" placeholder="P400 X-Dynamic SE"></label>
-    <label>Año<input id="nv-year" type="number" value="2027"></label>
-    <label>Precio de lista<span class="suffix-input"><input id="nv-price" type="number" placeholder="128500"><span>USD</span></span></label>
-    <label>Costo<span class="suffix-input"><input id="nv-cost" type="number" placeholder="96000"><span>USD</span></span></label>
-    <label>Color<input id="nv-color" placeholder="Santorini Black"></label>
-    <label>Unidades<input id="nv-stock" type="number" value="1" min="1"></label>
-    <label>Motorización<input id="nv-engine" placeholder="3.0L MHEV · 400 HP"></label>
-    <label>Estado logístico<select id="nv-stage">${logistics.map((p,i)=>`<option value="${i}" ${i===4?'selected':''}>${p}</option>`).join('')}</select></label>
+
+  <div class="nv-section"><span class="nv-legend">El vehículo</span>
+    <div class="nv-grid">
+      ${select('nv-brand','Marca',['Range Rover','Defender','Discovery','Jaguar'].map(b=>`<option>${b}</option>`).join(''))}
+      ${campo('nv-model','Modelo','Defender 130')}
+      ${campo('nv-version','Versión','P400 X-Dynamic SE')}
+      ${campo('nv-year','Año','2027','number','value="2027"')}
+    </div>
   </div>
-  <p class="field-note">El vehículo entra al inventario y aparece de inmediato en el cotizador.</p>
-  ${button('Guardar y publicar','save-vehicle','primary','check')}`);
+
+  <div class="nv-section"><span class="nv-legend">Especificaciones</span>
+    <div class="nv-grid">
+      ${campo('nv-color','Color exterior','Santorini Black')}
+      ${campo('nv-engine','Motorización','3.0L MHEV · 400 HP')}
+      ${campo('nv-stock','Unidades','1','number','value="1" min="1"')}
+      ${select('nv-stage','Dónde está la unidad',logistics.map((p,i)=>`<option value="${i}" ${i===4?'selected':''}>${p}</option>`).join(''))}
+    </div>
+  </div>
+
+  <div class="nv-section"><span class="nv-legend">Precio</span>
+    <div class="nv-grid nv-grid-2">
+      <div class="nv-field"><label for="nv-price">Precio de lista</label><div class="nv-money"><span>USD</span><input id="nv-price" type="number" placeholder="128,500"></div></div>
+      <div class="nv-field"><label for="nv-cost">Costo${canCost()?'':' <em>solo perfiles autorizados</em>'}</label><div class="nv-money"><span>USD</span><input id="nv-cost" type="number" placeholder="96,000" ${canCost()?'':'disabled'}></div></div>
+    </div>
+  </div>
+
+  <div class="nv-footer">
+    <p>${ic('info')} El vehículo entra al inventario y aparece de inmediato en el cotizador.</p>
+    ${button('Guardar y publicar','save-vehicle','primary','check')}
+  </div>`);
 }
 function saveVehicle(){
   const g=id=>document.getElementById(id)?.value.trim()||'';
