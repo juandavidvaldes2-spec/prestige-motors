@@ -50,3 +50,18 @@
 .track-step small{display:block;margin-top:8px;font-size:11px;color:var(--muted);line-height:1.3}
 .track-step.done small,.track-step.now small{color:var(--ink);font-weight:500}
 .track-note{font-size:12.5px;color:var(--muted);margin:0}
+
+.nv-grid{grid-template-columns:repeat(2,1fr);gap:14px;margin:18px 0 6px}
+.nv-grid label{font-size:12px}
+
+/* llamado a generar PDF */
+.pdf-cta{margin-top:18px;border:1px solid var(--gold);border-radius:var(--radius);background:#fdfaf2;padding:18px 20px;display:flex;gap:20px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.pdf-cta strong{display:flex;align-items:center;gap:9px;font-size:15px}
+.pdf-cta .icon{width:17px;height:17px;color:var(--gold)}
+.pdf-cta p{margin:7px 0 0;font-size:12.5px;color:var(--muted);max-width:430px;line-height:1.55}
+.document-toolbar span small{display:block;font-size:11.5px;opacity:.7;margin-top:3px;font-weight:400}
+.document-spec{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:18px 0;padding:16px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.document-spec small{display:block;font-size:9px;letter-spacing:1.6px;color:var(--muted);margin-bottom:6px}
+.document-spec strong{font-size:13px;font-weight:600;line-height:1.4}
+.document-finance div strong span{font-size:12px;font-weight:500;opacity:.7}
+@media print{.document-spec{break-inside:avoid}}
